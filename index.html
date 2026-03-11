@@ -1,251 +1,289 @@
 <!DOCTYPE html>
 <html lang="sv">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BS Automation</title>
-  <style>
-    :root{
-      --bg:#f6f8fb;
-      --surface:#ffffff;
-      --text:#111827;
-      --muted:#5b6473;
-      --line:#e5e7eb;
-      --blue:#2f7de1;
-      --blue-soft:#dbeafe;
-      --shadow:0 12px 35px rgba(17,24,39,.08);
-      --radius:22px;
-      --max:1120px;
-    }
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{
-      margin:0;
-      font-family:Inter,Arial,Helvetica,sans-serif;
-      background:linear-gradient(180deg,#f9fbff 0%, #f6f8fb 100%);
-      color:var(--text);
-      line-height:1.6;
-    }
-    a{color:inherit;text-decoration:none}
-    .container{width:min(var(--max),calc(100% - 32px));margin:0 auto}
-    .nav{
-      position:sticky;top:0;z-index:20;
-      backdrop-filter: blur(10px);
-      background:rgba(255,255,255,.8);
-      border-bottom:1px solid rgba(229,231,235,.7);
-    }
-    .nav-inner{
-      display:flex;align-items:center;justify-content:space-between;
-      min-height:78px;gap:24px;
-    }
-    .brand{display:flex;align-items:center;gap:14px;font-weight:800;letter-spacing:.02em}
-    .brand-logo{width:210px;max-width:42vw;height:auto;display:block}
-    .menu{display:flex;gap:24px;align-items:center;color:var(--muted);font-weight:600}
-    .menu a:hover{color:var(--text)}
-    .btn{
-      display:inline-flex;align-items:center;justify-content:center;
-      padding:14px 20px;border-radius:999px;font-weight:700;
-      border:1px solid transparent;transition:.2s ease;
-    }
-    .btn-primary{background:var(--text);color:#fff;box-shadow:var(--shadow)}
-    .btn-primary:hover{transform:translateY(-1px)}
-    .btn-secondary{background:#fff;border-color:var(--line)}
-    .hero{padding:72px 0 48px}
-    .hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:34px;align-items:center}
-    .eyebrow{
-      display:inline-flex;align-items:center;gap:10px;
-      padding:8px 12px;border-radius:999px;background:var(--surface);
-      border:1px solid var(--line);color:var(--muted);font-weight:700;font-size:14px;
-    }
-    .dot{width:8px;height:8px;border-radius:50%;background:var(--blue);box-shadow:0 0 0 6px rgba(47,125,225,.15)}
-    h1{font-size:clamp(38px,5.5vw,68px);line-height:1.02;letter-spacing:-.04em;margin:18px 0 18px}
-    .lead{font-size:clamp(18px,2vw,21px);color:var(--muted);max-width:62ch}
-    .hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-top:28px}
-    .hero-card{
-      background:linear-gradient(180deg,#fff,#f8fbff);
-      border:1px solid var(--line);border-radius:28px;padding:26px;box-shadow:var(--shadow)
-    }
-    .stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:18px}
-    .stat{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px}
-    .stat strong{display:block;font-size:28px;line-height:1.1}
-    .stat span{color:var(--muted);font-size:14px}
-    .section{padding:34px 0 26px}
-    .section-head{display:flex;justify-content:space-between;align-items:end;gap:18px;margin-bottom:22px}
-    h2{font-size:clamp(28px,4vw,42px);line-height:1.05;letter-spacing:-.03em;margin:0}
-    .section-copy{max-width:60ch;color:var(--muted)}
-    .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-    .card{
-      background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
-      padding:22px;box-shadow:var(--shadow)
-    }
-    .icon{
-      width:44px;height:44px;border-radius:14px;background:var(--blue-soft);
-      color:var(--blue);display:grid;place-items:center;font-weight:800;margin-bottom:14px
-    }
-    .card h3{margin:0 0 8px;font-size:20px}
-    .card p{margin:0;color:var(--muted)}
-    .reasons{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-    .reason{display:flex;gap:14px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px}
-    .tick{flex:0 0 28px;width:28px;height:28px;border-radius:50%;background:var(--text);color:#fff;display:grid;place-items:center;font-size:15px;font-weight:700}
-    .about{display:grid;grid-template-columns:1fr .95fr;gap:24px;align-items:stretch}
-    .about .card{padding:26px}
-    .contact-box{
-      background:linear-gradient(135deg,#111827 0%, #1f2937 100%);
-      color:#fff;border-radius:28px;padding:28px;box-shadow:var(--shadow)
-    }
-    .contact-box p,.contact-box a{color:rgba(255,255,255,.84)}
-    .contact-line{display:flex;gap:12px;align-items:center;padding:12px 0;border-top:1px solid rgba(255,255,255,.12)}
-    .contact-line:first-of-type{border-top:none;padding-top:2px}
-    footer{padding:42px 0 60px;color:var(--muted);font-size:14px}
-    @media (max-width: 980px){
-      .hero-grid,.about,.cards,.reasons{grid-template-columns:1fr}
-      .section-head{align-items:start;flex-direction:column}
-    }
-    @media (max-width: 760px){
-      .menu{display:none}
-      .hero{padding-top:36px}
-      .brand svg{width:178px}
-      .stat-grid{grid-template-columns:1fr}
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BS Automation</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial, Helvetica, sans-serif;
+background:#f7f9fc;
+color:#1a1a1a;
+line-height:1.6;
+}
+
+.container{
+max-width:1100px;
+margin:auto;
+padding:20px;
+}
+
+header{
+background:white;
+border-bottom:1px solid #e5e5e5;
+}
+
+.nav{
+display:flex;
+align-items:center;
+justify-content:space-between;
+}
+
+.logo{
+height:60px;
+}
+
+nav a{
+margin-left:20px;
+text-decoration:none;
+color:#333;
+font-weight:600;
+}
+
+.hero{
+padding:80px 20px;
+text-align:center;
+}
+
+.hero h1{
+font-size:42px;
+margin-bottom:20px;
+}
+
+.hero p{
+font-size:18px;
+color:#555;
+max-width:700px;
+margin:auto;
+}
+
+.section{
+padding:60px 20px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:25px;
+margin-top:30px;
+}
+
+.card{
+background:white;
+padding:25px;
+border-radius:10px;
+box-shadow:0 5px 15px rgba(0,0,0,0.05);
+}
+
+.card h3{
+margin-top:0;
+}
+
+.contact{
+text-align:center;
+background:white;
+border-radius:10px;
+padding:40px;
+}
+
+footer{
+text-align:center;
+padding:30px;
+color:#777;
+}
+
+</style>
 </head>
+
 <body>
-  <nav class="nav">
-    <div class="container nav-inner">
-      <a href="#top" class="brand" aria-label="BS Automation">
-        <svg viewBox="0 0 520 130" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="BS Automation logotyp">
-          <rect x="5" y="22" width="145" height="90" rx="4" stroke="#334155" stroke-width="4"/>
-          <path d="M42 81V49h40c18 0 26 6 26 17 0 7-3 12-10 15 10 3 14 8 14 17 0 13-9 20-28 20H42V81Zm20-13h20c7 0 11-3 11-8 0-5-4-8-11-8H62v16Zm0 33h24c8 0 12-3 12-9s-4-9-12-9H62v18Z" fill="#1F2937"/>
-          <path d="M126 101h38c11 0 16-3 16-9 0-4-3-7-9-8l-22-5c-15-3-22-11-22-24 0-17 13-27 36-27h44l-11 15h-32c-10 0-15 3-15 8 0 5 4 7 11 9l21 5c14 3 21 11 21 23 0 18-13 28-38 28h-50l12-15Z" fill="#1F2937"/>
-          <path d="M146 64L176 32" stroke="#2F7DE1" stroke-width="5" stroke-linecap="round"/>
-          <path d="M170 64L204 64" stroke="#2F7DE1" stroke-width="5" stroke-linecap="round"/>
-          <path d="M154 80L192 80" stroke="#2F7DE1" stroke-width="5" stroke-linecap="round"/>
-          <circle cx="207" cy="64" r="8" stroke="#2F7DE1" stroke-width="5"/>
-          <circle cx="194" cy="32" r="8" stroke="#2F7DE1" stroke-width="5"/>
-          <circle cx="202" cy="80" r="8" stroke="#2F7DE1" stroke-width="5"/>
-          <path d="M240 95V40h19v55h-19Zm31-27c0-17 13-29 31-29 18 0 31 12 31 29s-13 29-31 29c-18 0-31-12-31-29Zm19 0c0 8 5 14 12 14s12-6 12-14-5-14-12-14-12 6-12 14Zm63 27V40h19v40h30v15h-49Zm55 0V40h48v15h-29v6h26v14h-26v6h30v14h-49Zm58 0 23-55h20l23 55h-20l-3-8h-22l-3 8h-18Zm27-22h12l-6-15-6 15Zm51 22V40h19v55h-19Zm30-40V40h59v15h-20v40h-19V55h-20Zm64 13c0-17 13-29 31-29 18 0 31 12 31 29s-13 29-31 29c-18 0-31-12-31-29Zm19 0c0 8 5 14 12 14s12-6 12-14-5-14-12-14-12 6-12 14Zm63 27V40h18l22 28V40h19v55h-17l-23-29v29h-19Z" fill="#111827"/>
-        </svg>
-      </a>
-      <div class="menu">
-        <a href="#tjanster">Tjänster</a>
-        <a href="#varfor">Varför oss</a>
-        <a href="#om-oss">Om oss</a>
-        <a href="#kontakt">Kontakt</a>
-      </div>
-    </div>
-  </nav>
 
-  <main id="top">
-    <section class="hero">
-      <div class="container hero-grid">
-        <div>
-          <div class="eyebrow"><span class="dot"></span> Smart automation för småföretag</div>
-          <h1>Få mer gjort med mindre manuellt arbete.</h1>
-          <p class="lead">BS Automation hjälper småföretagare att spara tid, förbättra kundupplevelsen och skapa fler affärer genom smarta automationslösningar. Vi bygger enkla system som arbetar åt dig i bakgrunden — så att du kan fokusera på att driva företaget framåt.</p>
-          <div class="hero-actions">
-            <a class="btn btn-primary" href="#kontakt">Kontakta oss</a>
-            <a class="btn btn-secondary" href="#tjanster">Se våra tjänster</a>
-          </div>
-        </div>
-        <div class="hero-card">
-          <h3 style="margin:0 0 10px;font-size:24px;letter-spacing:-.02em">Vad vi automatiserar</h3>
-          <p style="margin:0;color:var(--muted)">Från första kundkontakt till bokning, uppföljning och lead-hantering.</p>
-          <div class="stat-grid">
-            <div class="stat"><strong>Chattbottar</strong><span>Svarar snabbt och fångar upp leads dygnet runt.</span></div>
-            <div class="stat"><strong>Autosvar</strong><span>Professionell respons via mejl, formulär och meddelanden.</span></div>
-            <div class="stat"><strong>Telefonsamtal</strong><span>Smarta flöden för inkommande frågor och kvalificering.</span></div>
-            <div class="stat"><strong>Bokningar</strong><span>Automatiska mötesbokningar utan onödig administration.</span></div>
-          </div>
-        </div>
-      </div>
-    </section>
+<header>
+<div class="container nav">
 
-    <section id="tjanster" class="section">
-      <div class="container">
-        <div class="section-head">
-          <div>
-            <h2>Tjänster inom automation</h2>
-          </div>
-          <p class="section-copy">Vi erbjuder moderna automationslösningar för småföretag som vill växa smartare, svara snabbare och arbeta mer effektivt utan att bygga upp onödig administration.</p>
-        </div>
-        <div class="cards">
-          <article class="card">
-            <div class="icon">AI</div>
-            <h3>Chattbottar</h3>
-            <p>Vi bygger chattbottar som svarar på vanliga frågor, guidar besökare rätt och omvandlar trafik till kvalificerade leads direkt på din hemsida.</p>
-          </article>
-          <article class="card">
-            <div class="icon">24/7</div>
-            <h3>Autosvar</h3>
-            <p>Automatiska svar via mejl, formulär och meddelanden ger dina kunder snabb återkoppling och skapar ett professionellt första intryck.</p>
-          </article>
-          <article class="card">
-            <div class="icon">TEL</div>
-            <h3>Automatiserade telefonsamtal</h3>
-            <p>Effektiv hantering av inkommande samtal med smart routing, informationsflöden och lösningar som minskar missade affärsmöjligheter.</p>
-          </article>
-          <article class="card">
-            <div class="icon">BOK</div>
-            <h3>Bokningar</h3>
-            <p>Smidiga bokningsflöden gör det enkelt för kunder att boka samtal, konsultationer eller möten — helt utan manuellt fram och tillbaka.</p>
-          </article>
-          <article class="card">
-            <div class="icon">LEAD</div>
-            <h3>Lead-generering</h3>
-            <p>Vi kopplar ihop formulär, chatt, kampanjer och uppföljningar så att fler intresserade besökare blir till verkliga affärsmöjligheter.</p>
-          </article>
-          <article class="card">
-            <div class="icon">SYS</div>
-            <h3>Helhetslösningar</h3>
-            <p>Vi ser över hela ditt flöde och skapar automation där den gör mest nytta — från första kontakt till uppföljning och konvertering.</p>
-          </article>
-        </div>
-      </div>
-    </section>
+<img src="logo.png" alt="BS Automation logo" class="logo">
 
-    <section id="varfor" class="section">
-      <div class="container">
-        <div class="section-head">
-          <div>
-            <h2>Varför ska kunden välja oss?</h2>
-          </div>
-          <p class="section-copy">Vi fokuserar på lösningar som är enkla att förstå, lätta att använda och som ger tydlig affärsnytta från start.</p>
-        </div>
-        <div class="reasons">
-          <div class="reason"><div class="tick">✓</div><div><strong>Mindre manuellt arbete</strong><br>Vi automatiserar repetitiva uppgifter så att du och ditt team kan lägga tiden på försäljning, leverans och kundrelationer.</div></div>
-          <div class="reason"><div class="tick">✓</div><div><strong>Snabbare kundrespons</strong><br>Kunder förväntar sig svar direkt. Med automation kan du vara tillgänglig även när du inte sitter vid datorn eller telefonen.</div></div>
-          <div class="reason"><div class="tick">✓</div><div><strong>Fler leads och bättre uppföljning</strong><br>Vi bygger flöden som fångar upp intresse, samlar in rätt information och gör det enklare att omvandla förfrågningar till affärer.</div></div>
-          <div class="reason"><div class="tick">✓</div><div><strong>Professionellt intryck</strong><br>Strukturerade svar, tydliga bokningsflöden och smart kommunikation stärker ditt varumärke och bygger förtroende.</div></div>
-          <div class="reason"><div class="tick">✓</div><div><strong>Anpassat för småföretag</strong><br>Vi fokuserar på praktiska lösningar som passar mindre företag med höga krav på effektivitet och kostnadskontroll.</div></div>
-          <div class="reason"><div class="tick">✓</div><div><strong>Enkelt, modernt och skalbart</strong><br>Vi bygger system som fungerar idag och samtidigt kan växa i takt med att ditt företag utvecklas.</div></div>
-        </div>
-      </div>
-    </section>
+<nav>
+<a href="#tjanster">Tjänster</a>
+<a href="#varfor">Varför oss</a>
+<a href="#om">Om oss</a>
+<a href="#kontakt">Kontakt</a>
+</nav>
 
-    <section id="om-oss" class="section">
-      <div class="container about">
-        <div class="card">
-          <h2 style="margin-bottom:14px">Om oss</h2>
-          <p style="color:var(--muted)">BS Automation finns för att göra avancerad teknik enkel och användbar för småföretagare. Många företag fastnar i manuella rutiner som stjäl tid, skapar onödig administration och gör att viktiga kundförfrågningar riskerar att tappas bort.</p>
-          <p style="color:var(--muted)">Vår idé är enkel: automation ska inte vara komplicerat. Den ska vara tydlig, effektiv och ge konkreta resultat. Därför bygger vi lösningar som hjälper företag att svara snabbare, boka smartare, följa upp bättre och skapa fler leads utan att öka arbetsbelastningen.</p>
-          <p style="color:var(--muted);margin-bottom:0">När du samarbetar med BS Automation får du en partner som kombinerar teknik, affärsförståelse och ett starkt fokus på enkelhet. Målet är alltid detsamma — att hjälpa ditt företag att arbeta mer professionellt, spara tid och växa med hjälp av smart automation.</p>
-        </div>
-        <aside class="contact-box" id="kontakt">
-          <h3 style="margin:0 0 8px;font-size:28px;letter-spacing:-.03em">Kontakt</h3>
-          <p style="margin:0 0 18px">Vill du veta hur automation kan hjälpa ditt företag? Hör av dig så tar vi fram en lösning som passar din verksamhet.</p>
-          <div class="contact-line"><strong>E-post:</strong>&nbsp;<a href="mailto:info@bsautomation.se">info@bsautomation.se</a></div>
-          <div class="contact-line"><strong>Telefon:</strong>&nbsp;<a href="tel:+46739946291">+46 73 994 62 91</a></div>
-          <div class="contact-line"><strong>Tjänster:</strong>&nbsp;<span>Chattbottar, autosvar, samtal, bokningar och lead-generering</span></div>
-          <div style="margin-top:20px">
-            <a class="btn" style="background:#fff;color:#111827" href="mailto:info@bsautomation.se">Kontakta oss idag</a>
-          </div>
-        </aside>
-      </div>
-    </section>
-  </main>
+</div>
+</header>
 
-  <footer>
-    <div class="container">© 2026 BS Automation — Enkelt, minimalistiskt och professionellt.</div>
-  </footer>
+
+<section class="hero">
+
+<h1>Automation som hjälper ditt företag växa</h1>
+
+<p>
+BS Automation hjälper småföretag att automatisera tidskrävande uppgifter
+och skapa fler affärsmöjligheter. Med smart teknik sparar du tid,
+ökar försäljningen och ger dina kunder snabbare service.
+</p>
+
+</section>
+
+
+<section id="tjanster" class="section container">
+
+<h2>Tjänster</h2>
+
+<div class="grid">
+
+<div class="card">
+<h3>AI Chattbottar</h3>
+<p>
+Automatiska chattbottar som svarar på kundfrågor dygnet runt
+och fångar upp nya leads direkt på din hemsida.
+</p>
+</div>
+
+<div class="card">
+<h3>Autosvar</h3>
+<p>
+Automatiserade svar via e-post, formulär och chatt
+så att dina kunder alltid får snabb respons.
+</p>
+</div>
+
+<div class="card">
+<h3>Automatiserade telefonsamtal</h3>
+<p>
+Smarta telefonlösningar som kan ta emot samtal,
+ge information och boka möten automatiskt.
+</p>
+</div>
+
+<div class="card">
+<h3>Bokningssystem</h3>
+<p>
+Låt kunder boka möten eller tjänster automatiskt
+utan manuellt arbete.
+</p>
+</div>
+
+<div class="card">
+<h3>Lead-generering</h3>
+<p>
+Vi bygger system som fångar fler potentiella kunder
+och hjälper dig öka din försäljning.
+</p>
+</div>
+
+<div class="card">
+<h3>Helhetslösningar</h3>
+<p>
+Vi analyserar ditt företag och implementerar automation
+där det sparar mest tid och pengar.
+</p>
+</div>
+
+</div>
+</section>
+
+
+
+<section id="varfor" class="section container">
+
+<h2>Varför välja BS Automation?</h2>
+
+<div class="grid">
+
+<div class="card">
+<h3>Spara tid</h3>
+<p>
+Automatisera repetitiva uppgifter så att du kan
+fokusera på det som faktiskt utvecklar ditt företag.
+</p>
+</div>
+
+<div class="card">
+<h3>Snabbare kundservice</h3>
+<p>
+Med automation kan dina kunder få svar direkt,
+även utanför arbetstid.
+</p>
+</div>
+
+<div class="card">
+<h3>Fler leads</h3>
+<p>
+Smarta system fångar upp intresserade kunder
+och gör det enklare att konvertera dem till affärer.
+</p>
+</div>
+
+<div class="card">
+<h3>Professionellt intryck</h3>
+<p>
+Automatiserade flöden gör att ditt företag
+upplevs mer modernt och professionellt.
+</p>
+</div>
+
+</div>
+
+</section>
+
+
+
+<section id="om" class="section container">
+
+<h2>Om oss</h2>
+
+<p>
+BS Automation grundades med ett enkelt mål:
+att hjälpa småföretag använda modern teknik på ett enkelt sätt.
+</p>
+
+<p>
+Många företag lägger timmar varje vecka på uppgifter som
+kan automatiseras. Vi hjälper företag att implementera
+smarta lösningar som arbetar åt dig i bakgrunden.
+</p>
+
+<p>
+Genom chattbottar, automatiska bokningar,
+AI-lösningar och smarta integrationssystem
+kan ditt företag arbeta mer effektivt
+och samtidigt ge en bättre kundupplevelse.
+</p>
+
+</section>
+
+
+
+<section id="kontakt" class="section container">
+
+<div class="contact">
+
+<h2>Kontakt</h2>
+
+<p><strong>Email:</strong> info@bsautomation.se</p>
+
+<p><strong>Telefon:</strong> +46 73 994 62 91</p>
+
+<p>
+Kontakta oss för en kostnadsfri konsultation
+där vi går igenom hur automation kan hjälpa just ditt företag.
+</p>
+
+</div>
+
+</section>
+
+
+
+<footer>
+
+© 2026 BS Automation
+
+</footer>
+
 </body>
 </html>
